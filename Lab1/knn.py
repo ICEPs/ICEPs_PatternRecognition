@@ -21,7 +21,7 @@ def data_conversion(string_unsplit):
 		split_arr[4] = '1'
 	elif split_arr[4] == 'Iris-versicolor':
 		split_arr[4] == '2'
-	elif split_arr[4] == 'Iris-virginica'
+	elif split_arr[4] == 'Iris-virginica':
 		split_arr[4] == '3'
 
 	return [float(n) for n in split_arr]
@@ -52,7 +52,7 @@ def knn(k_num, training_file_name, testing_file_name):
 		for train_line in train:
 			train_line_complete = data_conversion(train_line)
 			train_line_vectors = train_line_complete[0:4]
-			determinant[loop_count] = [euclidean_distance(test_line_vectors, train_line_vectors), train_line_complete[4])
+			determinant[loop_count] = euclidean_distance(test_line_vectors, train_line_vectors), train_line_complete[4])
 			if loop_count < test.len():
 				loop_count = loop_count+1
 			else:
