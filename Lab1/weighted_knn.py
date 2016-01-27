@@ -42,38 +42,45 @@ def data_conversion(string_unsplit):
 	
 	return [float(n) for n in split_arr]
 
-def weighted_KNN(training_file_name, testing_file_name):
+def weighted_KNN(k_num, training_file_name, testing_file_name):
+
 	train = open(training_file_name)
 	test = open(testing_file_name)
-	#main_counter = 0
-	#final_answer_arr = []
 	types = []
 	for test_line in test:
-		test_ints = data_conversion(test_line)
-		#counter = 0
-		for training_line in train:
-			training_ints = data_conversion(training_line)
-			arr_w = []
-			arr_w_y = []
-			dist_array = []
-			for i in range (0, len(training_ints)):
-				dist_array.append(euclidean_distance(test_ints, training_ints))
-			total_d = summation(dist_array)
-			w = 1/total_d
-			w_y = w*test_ints[4]
-			arr_w.append(w)
-			arr_w_y.append(w_y)
-			#counter = counter+1
-		number_type = int(summation(arr_w_y)/summation(arr_w))
+		answers = []
+		determinant = []
+		test_line_complete = data_conversion(test_line)
+		test_line_vectors = test_line_complete[0:4]
+		train.seek(0,0)
+		for train_line in train:
+			train_line_complete = data_conversion(train_line)
+			train_line_vectors = train_line_complete[0:4]
+			matrix = [euclidean_distance(test_line_vectors, train_line_vectors), train_line_complete[4]]
+			determinant.append(matrix)
+		
+		answers = sorted(determinant, key=lambda x: x[0])
+		w_array = []
+		w_y_array = []
+		for x in range(k_num):
+			squared_dist = square(answers[x][0])
+			if answers[x][0] != 0:
+				w = 1/squared_dist
+			else:
+				w = 0
+			w_array.append(w)
+			w_y = w*answers[x][1]
+			w_y_array.append(w_y)
+			
+		number_type = int((summation(w_y_array))/(summation(w_array)))
 		if  number_type == 1:
 			types.append("Iris-setosa")
 		elif number_type == 2:
 			types.append("Iris-versicolor")
 		elif number_type == 3:
 			types.append("Iris-virginica")
-		
 	return types
-	
-answers = weighted_KNN('train.txt', 'test.txt')
-print answers
+		
+final = weighted_KNN(3, 'train.txt', 'test.txt')
+print final
 	
