@@ -55,6 +55,7 @@ def knn(k_num, training_file_name, testing_file_name):
 	types = []
 	test_count = 0
 	fo = open("foo.txt", "w")
+	correct_counter = 0
 	for test_line in test:
 		type1 = 0
 		type2 = 0
@@ -75,7 +76,7 @@ def knn(k_num, training_file_name, testing_file_name):
 		
 		# print "Determinant: %s" % determinant
 		answers = sorted(determinant, key=lambda x: x[0])
-		print determinant
+		# print determinant
 		fo.write(str(test_line_complete)+"\n")
 		for lines in answers:
 			fo.write("Test Number: %s, line answer: %s\n" % (test_count, lines))
@@ -101,13 +102,20 @@ def knn(k_num, training_file_name, testing_file_name):
 		fo.write(str(greaterThan(type1, type2, type3))+"\n")
 
 		if type1 == greaterThan(type1, type2, type3):
-			types.append('Iris-setosa')
+			types.append('Iris-setosa\n')
 		elif type2 == greaterThan(type1, type2, type3):
-			types.append('Iris-versicolor')
+			types.append('Iris-versicolor\n')
 		elif type3 == greaterThan(type1, type2, type3):
-			types.append('Iris-virginica')
-		print types[test_count]
+			types.append('Iris-virginica\n')
+		# print types[test_count]
 		fo.write(str(types[test_count])+"\n")
+
+		string_test_arr = test_line.split(',')
+
+		# print "String Test Value: %s\n" % string_test_arr[4]
+		# print "Types Value: %s\n" % types[test_count] 
+		if string_test_arr[4] == types[test_count]:
+			correct_counter = correct_counter + 1
 		
 		# if type1 > type2:
 		# 	if type1 > type3:
@@ -121,13 +129,14 @@ def knn(k_num, training_file_name, testing_file_name):
 
 
 
+		print correct_counter
 		test_count = test_count + 1
 	fo.close()
 	return types
 
 
 knn_list = knn(15, '../iris.data', '../bezdekIris.data')
-print len(knn_list)
+# print len(knn_list)
 
 
 
